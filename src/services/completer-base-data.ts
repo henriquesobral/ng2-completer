@@ -53,7 +53,7 @@ export abstract class CompleterBaseData extends Subject<CompleterItem[]> impleme
         return matches;
     }
     
-    protected stripVowelAccent(str) {
+    protected stripVowelAccent(str: string) {
         var rExps=[
             {re:/[\xC0-\xC6]/g, ch:'A'},
             {re:/[\xE0-\xE6]/g, ch:'a'},
