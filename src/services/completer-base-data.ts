@@ -45,14 +45,33 @@ export abstract class CompleterBaseData extends Subject<CompleterItem[]> impleme
         if (this._searchFields !== null && this._searchFields !== undefined && term != "") {
             matches = data.filter(item => {
                 const values: any[] = searchFields ? searchFields.map(searchField => this.extractValue(item, searchField)).filter(value => !!value) : [item];
-                return values.some(value => value.toString().toLowerCase().indexOf(term.toString().toLowerCase()) >= 0);
+                return values.some(value => value.toString().toLowerCase().indexOf(this.stripVowelAccent(term.toString()).toLowerCase()) >= 0);
             });
         } else {
             matches = data;
         }
-
-
         return matches;
+    }
+    
+    protected stripVowelAccent(str) {
+        var rExps=[
+            {re:/[\xC0-\xC6]/g, ch:'A'},
+            {re:/[\xE0-\xE6]/g, ch:'a'},
+            {re:/[\xC8-\xCB]/g, ch:'E'},
+            {re:/[\xE8-\xEB]/g, ch:'e'},
+            {re:/[\xCC-\xCF]/g, ch:'I'},
+            {re:/[\xEC-\xEF]/g, ch:'i'},
+            {re:/[\xD2-\xD6]/g, ch:'O'},
+            {re:/[\xF2-\xF6]/g, ch:'o'},
+            {re:/[\xD9-\xDC]/g, ch:'U'},
+            {re:/[\xF9-\xFC]/g, ch:'u'},
+            {re:/[\xD1]/g, ch:'N'},
+            {re:/[\xF1]/g, ch:'n'} 
+        ];
+        for(var i=0, len=rExps.length; i<len; i++)
+            str=str.replace(rExps[i].re, rExps[i].ch);
+
+        return str;
     }
 
     protected extractTitle(item: any) {
