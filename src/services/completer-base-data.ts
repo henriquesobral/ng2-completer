@@ -45,7 +45,7 @@ export abstract class CompleterBaseData extends Subject<CompleterItem[]> impleme
         if (this._searchFields !== null && this._searchFields !== undefined && term != "") {
             matches = data.filter(item => {
                 const values: any[] = searchFields ? searchFields.map(searchField => this.extractValue(item, searchField)).filter(value => !!value) : [item];
-                return values.some(value => value.toString().toLowerCase().indexOf(this.stripVowelAccent(term.toString()).toLowerCase()) >= 0);
+                return values.some(value => this.stripVowelAccent(value.toString()).toLowerCase().indexOf(this.stripVowelAccent(term.toString()).toLowerCase()) >= 0);
             });
         } else {
             matches = data;
